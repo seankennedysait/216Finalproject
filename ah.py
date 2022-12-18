@@ -12,10 +12,10 @@ from tabulate import tabulate
 docFormatInFile = 'id_name_specilist_timing_qualification_roomNb\n'
 labFormatInFile = 'Facility_Cost\n'
 patFormatInFile = 'id_Name_Disease_Gender_Age\n'
-filenames = {"doctor": "files/doctors.txt",
-             "facility": "files/facilities.txt",
-             "lab": "files/laboratories.txt",
-             "patient": "files/patients.txt"}
+filenames = {"doctor": "dataFiles/doctors.txt",
+             "facility": "dataFiles/facilities.txt",
+             "lab": "dataFiles/laboratories.txt",
+             "patient": "dataFiles/patients.txt"}
 
 
 
@@ -194,14 +194,14 @@ class Laboratory:
     __cost:float
 
     # constructor 
-    def __init__(self, name:str, cost:str):
-        assert (cost >= 0)
+    def __init__(self, name:str, cost:float):
+        assert (cost >= 0.0)
         self.__name = name
         self.__cost = cost
 
     def addLabToFile(self, filename:str):
         labFile = open(filename, "a")
-        labFile.write(f"{self.formatLabInfo()\n}")
+        labFile.write(f"{self.formatLabInfo()}\n")
         labFile.close()
 
     @staticmethod
@@ -226,18 +226,19 @@ class Laboratory:
     @classmethod
     def enterLaboratoryInfo(cls):
         labname = input("Enter Laboratory facility:\n")
-        labcost = input("Enter Laboratory cost:\n")
+        labcost = float(input("Enter Laboratory cost:\n"))
         return cls(labname, labcost)
 
     @classmethod
     def readLaboratoriesFile(cls, filename:str):
         labList = []
         labFile = open(filename, 'r')
+        assert (labFile.readline() == labFormatInFile)
         for line in labFile:
             attribs = line.strip().split("_")
             assert (len(attribs) == 2)
-            labList.append(cls(attribs[0], float(attribs[1]))
-        file.close()
+            labList.append(cls(attribs[0], float(attribs[1])))
+        labFile.close()
         return labList
 
 
@@ -351,13 +352,13 @@ class Management:
             elif (key == "facility"):
                 self.__lists[key] = Facility.readFacilitiesFile(filenames[key])
             elif (key == "lab"):
-                self.__lists[key] = Laboratory.readLabFile(filenames[key])
+                self.__lists[key] = Laboratory.readLaboratoriesFile(filenames[key])
             elif (key == "patient"):
                 self.__lists[key] = Patient.readPatientFile(filenames[key])
             else:
                 assert (False)
 
-    def mainmenu():
+    def mainmenu(self):
         menu = int(9)
         while (menu!=0):
             menu = int(input("Welcome to Alberta Hospital (AH) Managment system \n"
@@ -365,17 +366,20 @@ class Management:
                              "1 -   Doctors\n"
                              "2 -   Facilities\n"
                              "3 -   Laboratories\n"
-                             "4 -   Patients\n\n"))
+                             "4 -   Patients\n\n"
+                             "> "))
             if (menu == 1):
-                print ("Doctors")
-            if (menu == 2):
-                print("Facilities")
-            if (menu == 3):
-                laboratory.labmenu()
-            if (menu == 4):
-                print("Patients")
-            if (menu == 0):
-                exit
+                self.doc_menu()
+            elif (menu == 2):
+                self.fac_menu()
+            elif (menu == 3):
+                self.lab_menu()
+            elif (menu == 4):
+                self.pat_menu()
+            elif (menu == 0):
+                break
+            else:
+                print("Sorry, invalid option selected. Try again...\n")
 
     def doc_menu(self):
         while (True):
@@ -421,7 +425,8 @@ class Management:
             menu = int(input("\nFacilities Menu:\n"
                                "1 - Display Facilities list\n"
                                "2 - Add facility\n"
-                               "3 - Back to the main menu\n"))
+                               "3 - Back to the main menu\n"
+                               "> "))
             if (menu == 1):
                 Facility.displayFacilities(self.__lists["facility"])
             elif (menu == 2):
@@ -439,11 +444,12 @@ class Management:
             menu = int(input("\nLaboratories Menu:\n"
                                "1 - Display laboratories list\n"
                                "2 - Add laboratory\n"
-                               "3 - Back to the main menu\n"))
+                               "3 - Back to the main menu\n"
+                               "> "))
             if (menu == 1):
                 Laboratory.displayLabsList(self.__lists["lab"])
             elif (menu == 2):
-                self.__lists["lab"].append(Laboratory.enterLabInfo())
+                self.__lists["lab"].append(Laboratory.enterLaboratoryInfo())
             elif (menu == 3):
                 break
             else:
@@ -459,7 +465,8 @@ class Management:
                                "2 - Search for patient by ID\n"
                                "3 - Add patient\n"
                                "4 - Edit patient info\n"
-                               "5 - Back to the main menu\n"))
+                               "5 - Back to the main menu\n"
+                               "> "))
             if (menu == 1):
                 Patient.displayPatientsList(self.__lists["patient"])
             elif (menu == 2):
