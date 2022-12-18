@@ -113,7 +113,7 @@ class Doctor:
 
     def addDrToFile(self, filename:str):
         docFile = open(filename, "a")
-        docFile.write(f"\n{self.formatDrInfo()}")
+        docFile.write(f"{self.formatDrInfo()}\n")
         docFile.close()
 
     @staticmethod
@@ -154,7 +154,7 @@ class Facility:
 
     def addFacility(self, filename:str):
         facFile = open(filename, "a")
-        facFile.write(f"\n{str(self)}")
+        facFile.write(f"{str(self)}\n")
         facFile.close()
 
     @classmethod
@@ -302,10 +302,10 @@ class Patient:
     def editPatientInfo(cls, pid:int, patList:list):
         for i in range(len(patList)):
             if (patList[i].getPid() == pid):
-                name = input("Enter new name: ")
-                disease = input("Enter new disease: ")
-                gender = input("Enter new gender: ")
-                age = int(input("Enter new age: "))
+                name = input("\nEnter new name: ")
+                disease = input("\nEnter new disease: ")
+                gender = input("\nEnter new gender: ")
+                age = int(input("\nEnter new age: "))
                 patList[i] = cls(patList[i].getPid(), name, disease, gender, age)
                 return patList[i]
         print("Can't find the Patient with given ID in the system")
@@ -313,7 +313,7 @@ class Patient:
 
     def addPatientToFile(self, filename:str):
         patFile = open(filename, "a")
-        patFile.write(f"\n{self.formatPatientInfo()}")
+        patFile.write(f"{self.formatPatientInfo()}\n")
         patFile.close()
 
     @staticmethod
