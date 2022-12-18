@@ -1,10 +1,16 @@
-#####
-# Sean Kennedy
-# December 15 2022
-# This program is to view and edit files on the alberta health system.
+##################################################################################################
+# A Python module containing facilities for dealing with Alberta Health(AH) Management System
+# Authors : (Sean Kennedy) (Sukhjinder Kahlon) (Michael Liu)
+# Last Modified : December 17 2022
+# Version 2.0.1
 #
-# Version 1.0.0
-#####
+# This module contains classes for dealing with AH Hospital Management. The classes abstractly 
+# encapsulate data about Doctors, Patients and Hospital facilities and provide convinient operations
+# around this data such as adding more entries, editing existing ones, displaying them nicely in a 
+# table and saving them to files. The Management Class provides the scaffolding for the whole code
+# and uses read functions provided by other classes to read the data into into lists of these class
+# objects. It also provides a simple menu UI to interact with a user on a console.
+##################################################################################################
 
 from tabulate import tabulate
 
@@ -139,6 +145,7 @@ class Doctor:
 
 
 class Facility:
+    """ A class representing various facilities available at Hospital """
     __name:str
 
     def __init__(self, name:str):
@@ -185,6 +192,7 @@ class Facility:
         return self.__name
 
 class Laboratory:
+    """ A class representing various Labs at Hospital """
     __name:str
     __cost:float
 
@@ -238,6 +246,7 @@ class Laboratory:
 
 
 class Patient:
+    """ A class for representing and managing individual Patient's data """
     __pid:int
     __name:str
     __disease:str
@@ -336,6 +345,8 @@ class Patient:
         return self.__age
 
 class Management:
+    """ A class for managing list of other Class objects and proving a console UI to access
+        the management system"""
     __lists = {"doctor": [], "facility": [], "lab": [], "patient": []}
     __filenames = {"doctor": [], "facility": [], "lab": [], "patient": []}
 
@@ -353,7 +364,7 @@ class Management:
             else:
                 assert (False)
 
-    def mainmenu(self):
+    def main_menu(self):
         menu = int(9)
         while (menu!=0):
             menu = int(input("\nWelcome to Alberta Hospital (AH) Managment system \n"
