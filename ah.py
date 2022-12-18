@@ -12,11 +12,6 @@ from tabulate import tabulate
 docFormatInFile = 'id_name_specilist_timing_qualification_roomNb\n'
 labFormatInFile = 'Facility_Cost\n'
 patFormatInFile = 'id_Name_Disease_Gender_Age\n'
-filenames = {"doctor": "dataFiles/doctors.txt",
-             "facility": "dataFiles/facilities.txt",
-             "lab": "dataFiles/laboratories.txt",
-             "patient": "dataFiles/patients.txt"}
-
 
 
 class Doctor:
@@ -103,22 +98,22 @@ class Doctor:
     def editDoctorInfo(cls, ID:int, docList:list):
         """ Edits attributes of Doctor object with matching ID in docList and returns the updated
             Doctor object. Returns None if no match is found. """
-        for doc in docList:
-            if (doc.getID() == ID):
+        for i in range(len(docList)):
+            if (docList[i].getID() == ID):
                 name = input("\nEnter new name: ")
                 spec = input("\nEnter new speciality: ")
                 wTime = input("\nEnter new timing (e.g., 7am-10pm): ")
                 qual = input("\nEnter new qualification: ")
                 roomNo = int(input("\nEnter new room number: "))
-                doc = cls(doc.getID(), name, spec, wTime, qual, roomNo)
-                return doc
+                docList[i] = cls(docList[i].getID(), name, spec, wTime, qual, roomNo)
+                return docList[i]
 
         print("Can't find the doctor with the given ID in the system")
         return None
 
     def addDrToFile(self, filename:str):
         docFile = open(filename, "a")
-        docFile.write(f"\n{self.formatDrInfo()}")
+        docFile.write(f"{self.formatDrInfo()}\n")
         docFile.close()
 
     @staticmethod
@@ -159,7 +154,7 @@ class Facility:
 
     def addFacility(self, filename:str):
         facFile = open(filename, "a")
-        facFile.write(f"\n{str(self)}")
+        facFile.write(f"{str(self)}\n")
         facFile.close()
 
     @classmethod
@@ -225,8 +220,8 @@ class Laboratory:
 
     @classmethod
     def enterLaboratoryInfo(cls):
-        labname = input("Enter Laboratory facility:\n")
-        labcost = float(input("Enter Laboratory cost:\n"))
+        labname = input("Enter Laboratory facility: ")
+        labcost = float(input("Enter Laboratory cost: "))
         return cls(labname, labcost)
 
     @classmethod
@@ -287,7 +282,7 @@ class Patient:
     @staticmethod
     def searchPatientById(pid:int, patList:list):
         for pat in patList:
-            if (pat.getPid == pid):
+            if (pat.getPid() == pid):
                 return pat
         return None
 
@@ -305,20 +300,20 @@ class Patient:
 
     @classmethod
     def editPatientInfo(cls, pid:int, patList:list):
-        for pat in patList:
-            if (pat.getPid() == pid):
-                name = input("Enter new name: ")
-                disease = input("Enter new disease: ")
-                gender = input("Enter new gender: ")
-                age = int(input("Enter new age: "))
-                pat = cls(pat.getPid(), name, disease, gender, age)
-                return pat
+        for i in range(len(patList)):
+            if (patList[i].getPid() == pid):
+                name = input("\nEnter new name: ")
+                disease = input("\nEnter new disease: ")
+                gender = input("\nEnter new gender: ")
+                age = int(input("\nEnter new age: "))
+                patList[i] = cls(patList[i].getPid(), name, disease, gender, age)
+                return patList[i]
         print("Can't find the Patient with given ID in the system")
         return None
 
     def addPatientToFile(self, filename:str):
         patFile = open(filename, "a")
-        patFile.write(f"\n{self.formatPatientInfo()}")
+        patFile.write(f"{self.formatPatientInfo()}\n")
         patFile.close()
 
     @staticmethod
@@ -361,12 +356,12 @@ class Management:
     def mainmenu(self):
         menu = int(9)
         while (menu!=0):
-            menu = int(input("Welcome to Alberta Hospital (AH) Managment system \n"
+            menu = int(input("\nWelcome to Alberta Hospital (AH) Managment system \n"
                              "Select from the following options, or select 0 to stop:\n"
                              "1 -   Doctors\n"
                              "2 -   Facilities\n"
                              "3 -   Laboratories\n"
-                             "4 -   Patients\n\n"
+                             "4 -   Patients\n"
                              "> "))
             if (menu == 1):
                 self.doc_menu()
@@ -391,6 +386,7 @@ class Management:
                                "5 - Edit doctor info\n"
                                "6 - Back to the Main Menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Doctor.displayDoctorsList(self.__lists["doctor"])
             elif (menu == 2):
@@ -402,7 +398,7 @@ class Management:
                     doc.displayDoctorInfo()
             elif (menu == 3):
                 name = input("Enter the doctor name: ")
-                doc = Doctor.searchDoctorByName(name, self.__list["doctor"])
+                doc = Doctor.searchDoctorByName(name, self.__lists["doctor"])
                 if (doc == None):
                     print("Can't find the doctor with the given name in the system")
                 else:
@@ -427,6 +423,7 @@ class Management:
                                "2 - Add facility\n"
                                "3 - Back to the main menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Facility.displayFacilities(self.__lists["facility"])
             elif (menu == 2):
@@ -446,6 +443,7 @@ class Management:
                                "2 - Add laboratory\n"
                                "3 - Back to the main menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Laboratory.displayLabsList(self.__lists["lab"])
             elif (menu == 2):
@@ -467,11 +465,12 @@ class Management:
                                "4 - Edit patient info\n"
                                "5 - Back to the main menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Patient.displayPatientsList(self.__lists["patient"])
             elif (menu == 2):
                 pid = int(input("Enter the Patient ID: "))
-                pat = Patient.searchPatientById(ID, self.__lists["patient"])
+                pat = Patient.searchPatientById(pid, self.__lists["patient"])
                 if (pat == None):
                     print("Can't find patient with the given ID in the system")
                 else:
