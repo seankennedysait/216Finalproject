@@ -220,8 +220,8 @@ class Laboratory:
 
     @classmethod
     def enterLaboratoryInfo(cls):
-        labname = input("Enter Laboratory facility:\n")
-        labcost = float(input("Enter Laboratory cost:\n"))
+        labname = input("Enter Laboratory facility: ")
+        labcost = float(input("Enter Laboratory cost: "))
         return cls(labname, labcost)
 
     @classmethod
@@ -386,6 +386,7 @@ class Management:
                                "5 - Edit doctor info\n"
                                "6 - Back to the Main Menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Doctor.displayDoctorsList(self.__lists["doctor"])
             elif (menu == 2):
@@ -422,6 +423,7 @@ class Management:
                                "2 - Add facility\n"
                                "3 - Back to the main menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Facility.displayFacilities(self.__lists["facility"])
             elif (menu == 2):
@@ -441,6 +443,7 @@ class Management:
                                "2 - Add laboratory\n"
                                "3 - Back to the main menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Laboratory.displayLabsList(self.__lists["lab"])
             elif (menu == 2):
@@ -462,6 +465,7 @@ class Management:
                                "4 - Edit patient info\n"
                                "5 - Back to the main menu\n"
                                "> "))
+            print()
             if (menu == 1):
                 Patient.displayPatientsList(self.__lists["patient"])
             elif (menu == 2):
