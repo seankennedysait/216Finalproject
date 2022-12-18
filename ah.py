@@ -16,7 +16,7 @@ from tabulate import tabulate
 
 # Data Format in files
 docFormatInFile = 'id_name_specilist_timing_qualification_roomNb\n'
-labFormatInFile = 'Facility_Cost\n'
+labFormatInFile = 'Lab_Cost\n'
 patFormatInFile = 'id_Name_Disease_Gender_Age\n'
 
 
